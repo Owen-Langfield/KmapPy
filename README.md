@@ -15,19 +15,19 @@ Defintions:
 - group is short for prime implicant.
 - A grouped cell is one within a group.
 
-'''
-1. REPEAT until all minterm cells are grouped
-2.   Pick an ungrouped minterm cell - where cell.grouped = false
-3.     REPEAT for each adjacent cell
-4.       Move to one of its adjacent cells
-5.       Find the bit that had to flip to get to that adjacent cell.
-6.       Apply the bit change to all previously visited cells.
-7.       IF one of the previously visited cells move to a cell with 0,
-8.         cancel and check next adjacent cell
-9.       OTHERWISE add the list of visited cells to temp_groups[]
-10.   Add the largest of temp_groups[] to groups[]
-11.   FOR each cell within largest group, cell.grouped = true
-'''
+```
+1.     REPEAT until all minterm cells are grouped
+2.       Pick an ungrouped minterm cell - where cell.grouped = false
+3.         REPEAT for each adjacent cell
+4.           Move to one of its adjacent cells
+5.           Find the bit that had to flip to get to that adjacent cell.
+6.           Apply the bit change to all previously visited cells.
+7.           IF one of the previously visited cells move to a cell with 0,
+8.             cancel and check next adjacent cell
+9.           OTHERWISE add the list of visited cells to temp_groups[]
+10.       Add the largest of temp_groups[] to groups[]
+11.       FOR each cell within largest group, cell.grouped = true
+```
 
 ## Status
 
