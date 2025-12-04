@@ -18,40 +18,39 @@ Defintions:
 - A minterm is a cell with a value of 1.
 - "Flipping a bit" is where we NOT a bit value. (e.g. 1 -> 0, 0 -> 1)
 
-Below is some pseudocode for how the algorithm works, though it is slightly different to the actual implementation, this is all within a KMap object which contains Cell objects with their relevant properties and methods.
+Below is some pseudocode for how the algorithm works, though it is slightly different to the actual implementation.
 
 ```python
-SET temp_groups TO EMPTY LIST
-SET groups TO EMPTY ARRAY
-SET cells = LIST *intialised with reference to each cell within the kmap*
-SET minterm_cells TO cells WHERE value == 1
+groups ← empty list
+temp_groups ← empty list
+cells ← list of all k-map cells
+minterm_cells ← all cells where value = 1
 
-REPEAT FOR EACH current_cell IN minterm_cells:
-     IF current_cell.grouped == True: CONTINUE TO NEXT ITERATION
-     CALL current_cell.find_group()
-     APPEND largest(temp_group) TO groups
-     SET temp_groups TO EMPTY LIST
+FOR each current_cell IN minterm_cells:
+    IF current_cell.grouped = True:
+        CONTINUE
+    temp_groups ← empty list
+    CALL find_group(current_cell, previously_visited = [current_cell])
+    ADD largest(temp_groups) TO groups
+END FOR
 
-FUNCTION find_group(previously_visited_cells):
-     SET newly_visited_cells TO EMPTY LIST
-     REPEAT FOR EACH adj_cell IN current_cell.adjacent_cells:
-          SET bit_flip_position TO *the position of the bit that flipped between current_cell and adj_cell*
-          SET is_rectangular TO True
-          SET newly_visited_cells TO EMPTY LIST
-          REPEAT FOR EACH prev_cell in previously_visited_cells:
-               #flip_bit returns the bit string with the bit at the specified position flipped
-               SET ungrouped_adjacent_cell_pos TO flip_bit(prev_cell.pos, bit_flip_position)
-               IF kmap.cells[ungrouped_adjacent_cell_pos].value == 0:
-                    SET newly_visited_cells TO EMPTY LIST
-                    SET is_rectangular == False
-                    BREAK # not a valid rectangle on the kmap
-               ELSE:
-                    APPEND v TO newly_visited_cells
-          IF is_rectangular == True:
-               SET all_visited_cells TO EXTEND visted_cells BY new_visited_cells
-               adj_cell.find_group(all_visited_cells)
-               APPEND temp_groups BY all_visited_cells
-
+FUNCTION find_group(current_cell, previously_visited):
+    FOR each adj_cell IN current_cell.adjacent_cells:
+        bit_flip_pos ← the bit position that differs between current_cell and adj_cell
+        is_rectangular ← True
+        new_cells ← empty list
+        FOR each visited_cell IN previously_visited:
+            candidate_pos ← flip_bit(visited_cell.pos, bit_flip_pos)
+            candidate_cell ← kmap.cells[candidate_pos]
+            IF candidate_cell.value = 0:
+                is_rectangular ← False
+                BREAK
+            ELSE:
+                ADD candidate_cell TO new_cells
+        IF is_rectangular = True:
+            all_visited ← previously_visited ∪ new_cells
+            CALL find_group(adj_cell, all_visited)
+            ADD all_visited TO temp_groups
 ```
 
 ## Status
