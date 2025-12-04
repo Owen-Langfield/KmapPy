@@ -4,7 +4,7 @@ KmapPy is a simple program that asks the user their variable names and the truth
 
 From there it will return prime implicants and the boolean expressions for each one, as well as the final output equation. 
 
-KmapPy was developed for an assigment to avoid solving large kmaps manually. This algorithm *should* work for n-variables, however it has not been tested for more than 6. 
+KmapPy was developed for an assigment to avoid solving several large kmaps manually. This algorithm *should* work for n-variables, however it has not been tested for more than 6. 
 
 ## How to use
 
