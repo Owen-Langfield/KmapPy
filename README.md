@@ -9,8 +9,13 @@ KmapPy was developed for an assignment to avoid solving several large K-maps man
 ## How to Use
 
 1. run main.py.
-2. follow the instructions, the number of variable names you enter must be consistent with the number of outputs you enter.
-3. Expect it to crash with invalid inputs. 
+
+2. Enter the variable names. 
+<img width="802" height="269" alt="image" src="https://github.com/user-attachments/assets/f83f027e-9568-4c8a-aa9d-c28068408b37" />
+
+3. Enter the output column of your truth table and recieve your final boolean equation!
+<img width="1749" height="361" alt="image" src="https://github.com/user-attachments/assets/9b9a48c6-b8de-4684-87ec-03a44d0180df" />
+
 
 ## The Algorithm
 
