@@ -18,7 +18,7 @@ Defintions:
 - A minterm is a cell with a value of 1.
 - "Flipping a bit" is where we NOT a bit value. (e.g. 1 -> 0, 0 -> 1)
 
-Below is some pseudocode for how the algorithm works, though it is slightly different to the actual implementation.
+Below is some pseudocode for how the grouping algorithm works. This returns a list of prime implicants.
 
 ```python
 groups ← empty list
@@ -51,6 +51,36 @@ FUNCTION find_group(current_cell, previously_visited):
             all_visited ← previously_visited ∪ new_cells
             CALL find_group(adj_cell, all_visited)
             ADD all_visited TO temp_groups
+```
+
+Once the list of prime implicants have been found, the boolean equations must then be derived. The below pseudocode should describe this:
+
+```python
+FUNCTION DeriveBooleanExpressions(groups, variable_names, num_variables):
+
+    boolean_expressions ← empty list
+
+    FOR EACH group IN groups:
+        # Step 1: determine which bit positions remain unchanged across all cells in the group
+        unchanged_mask ← bitmask with all bits = 1 (size = num_variables)
+        FOR i FROM 0 TO (length(group) - 2):
+            current_pos  ← group[i].position_bits
+            next_pos     ← group[i+1].position_bits
+            changed_bits ← XOR(current_pos, next_pos)
+            unchanged_bits ← NOT(changed_bits)
+            unchanged_mask ← (unchanged_mask AND unchanged_bits)
+        unchanged_mask_bits ← convert unchanged_mask TO binary string of length num_variables
+        # Step 2: build the product term using only unchanged bits
+        reference_pos_bits ← binary representation of group[0].position_bits
+        product_term ← empty string
+        FOR bit_index FROM 0 TO (num_variables - 1):
+            IF unchanged_mask_bits[bit_index] = '1':
+                IF reference_pos_bits[bit_index] = '1':
+                    product_term ← product_term + variable_names[bit_index]
+                ELSE IF reference_pos_bits[bit_index] = '0':
+                    product_term ← product_term + "NOT " + variable_names[bit_index]
+        APPEND product_term TO boolean_expressions
+    RETURN boolean_expressions
 ```
 
 ## Status
