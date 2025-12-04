@@ -6,6 +6,12 @@ From there it will return prime implicants and the boolean expressions for each 
 
 KmapPy was developed for an assigment to avoid solving large kmaps manually. This algorithm *should* work for n-variables, however it has not been tested for more than 6. 
 
+## How to use
+
+1. run main.py.
+2. follow the instructions, the number of variable names you enter must be consistent with the number of outputs you enter.
+3. Expect it to crash with invalid inputs. 
+
 ## The algorithm
 
 Once the user has entered their variable names and output column, the algorithm begins. The algorithm is recursive, and finds all possible groupings of a minterm cell and picks the largest.
