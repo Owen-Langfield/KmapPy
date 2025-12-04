@@ -18,28 +18,40 @@ Defintions:
 - A minterm is a cell with a value of 1.
 - "Flipping a bit" is where we NOT a bit value. (e.g. 1 -> 0, 0 -> 1)
 
-```python
-     REPEAT FOR EACH current_cell IN kmap.minterm_cells:
-         IF current_cell.grouped == true: CONTINUE TO NEXT ITERATION
-         CALL current_cell.find_group()
+Below is some pseudocode for how the algorithm works, though it is slightly different to the actual implementation, this is all within a KMap object which contains Cell objects with their relevant properties and methods.
 
-       FUNCTION find_group(previously_visited_cells):
-         SET newly_visited_cells TO EMPTY LIST
-         REPEAT FOR EACH adj_cell IN current_cell.adjacent_cells:
-             SET bit_flip_position TO *the position of the bit that flipped between current_cell and adj_cell*
-             REPEAT FOR EACH prev_cell in previously_visited_cells:
-                    # flip_bit returns the bit string with the bit at the specified position flipped
-                   SET ungrouped_adjacent_cell_pos TO flip_bit(prev_cell.pos, bit_flip_position)
-                 IF kmap.cells[ungrouped_adjacent_cell_pos].value == 0:
-                     SET newly_visited_cells TO EMPTY LIST
-                     BREAK # not a valid rectangle on the kmap
-                 ELSE:
+```python
+SET temp_groups TO EMPTY LIST
+SET groups TO EMPTY ARRAY
+SET cells = LIST *intialised with reference to each cell within the kmap*
+SET minterm_cells TO cells WHERE value == 1
+
+REPEAT FOR EACH current_cell IN minterm_cells:
+     IF current_cell.grouped == True: CONTINUE TO NEXT ITERATION
+     CALL current_cell.find_group()
+     APPEND largest(temp_group) TO groups
+     SET temp_groups TO EMPTY LIST
+
+FUNCTION find_group(previously_visited_cells):
+     SET newly_visited_cells TO EMPTY LIST
+     REPEAT FOR EACH adj_cell IN current_cell.adjacent_cells:
+          SET bit_flip_position TO *the position of the bit that flipped between current_cell and adj_cell*
+          SET is_rectangular TO True
+          SET newly_visited_cells TO EMPTY LIST
+          REPEAT FOR EACH prev_cell in previously_visited_cells:
+               #flip_bit returns the bit string with the bit at the specified position flipped
+               SET ungrouped_adjacent_cell_pos TO flip_bit(prev_cell.pos, bit_flip_position)
+               IF kmap.cells[ungrouped_adjacent_cell_pos].value == 0:
+                    SET newly_visited_cells TO EMPTY LIST
+                    SET is_rectangular == False
+                    BREAK # not a valid rectangle on the kmap
+               ELSE:
                     APPEND v TO newly_visited_cells
-              
-11.                
-10.       APPEND LARGEST temporary_groups TO groups  # Add largest implicant to list of prime implicants
-          SET temp_groups TO EMPTY LIST
-11.       REPEAT FOR EACH cell within largest group: cell.grouped = true
+          IF is_rectangular == True:
+               SET all_visited_cells TO EXTEND visted_cells BY new_visited_cells
+               adj_cell.find_group(all_visited_cells)
+               APPEND temp_groups BY all_visited_cells
+
 ```
 
 ## Status
